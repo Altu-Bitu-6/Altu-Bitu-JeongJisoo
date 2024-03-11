@@ -3,18 +3,17 @@
 
 using namespace std;
 
-
-vector<int> prime(int n){
-    vector<int> fac(n+1,1);
-    fac[0] = fac[1] = 0;
-    for(int i=2; i*i<=n; i++){
-        if(fac[i]==1){
-            for(int j=i*i; j<=n; j+=i){
-                fac[j]=0;
+vector<bool> Eratos(int n) {
+    vector<bool> isPrime(n + 1, true);
+    isPrime[0] = isPrime[1] = false;
+    for (int i = 2; i * i <= n; i++) {
+        if (isPrime[i]) {
+            for (int j = i * i; j <= n; j += i) {
+                isPrime[j] = false;
             }
         }
     }
-    return fac;
+    return isPrime;
 }
 
 int main() {
@@ -22,26 +21,25 @@ int main() {
     cin.tie(NULL);
     cout.tie(NULL);
 
+    const int MAX = 1000000;
+    vector<bool> isPrime = Eratos(MAX);
 
     int n;
-    vector<int> fac = prime(n);
-
-    while(1){
-        bool flag = false;
+    while (1) {
         cin >> n;
-
-        if(n==0){
+        if (n == 0) {
             break;
         }
 
-        for(int i=3; i<=n; i +=2){
-            if(fac[i]==1 && fac[n-i]==1){
+        bool flag = false;
+        for (int i = 3; i <= n; i += 2) {
+            if (isPrime[i] && isPrime[n - i]) {
                 flag = true;
-                cout << n << " = " << i << " + " << n-i << "\n";
+                cout << n << " = " << i << " + " << n - i << "\n";
                 break;
             }
         }
-        if(!flag){
+        if (!flag) {
             cout << "Goldbach's conjecture is wrong.\n";
         }
     }
